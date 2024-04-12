@@ -147,14 +147,14 @@ public class Asteroids extends Game {
         // End Asteroids /////////////////////////////////////////////////////
         // Bullets ///////////////////////////////////////////////////////////
         if (bullet1 != null) {
-            bullet1.paint(brush);
-            if (bullet1.move() == false) {
+            bullet1.paint(brush, 30);
+            if (bullet1.bulletMove() == false) {
                 bullet1 = null;
             }
         }
         if (bullet2 != null) {
-            bullet2.paint(brush);
-            if (bullet2.move() == false) {
+            bullet2.paint(brush, 30);
+            if (bullet2.bulletMove() == false) {
                 bullet2 = null;
             }
         }

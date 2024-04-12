@@ -14,30 +14,20 @@ public class Bullet extends Circle
         super(_position, _heading);
     }
 
-    public void paint(Graphics brush) {
+    public void paint(Graphics brush, int diameter) {
         brush.setColor(Color.white);
-        brush.fillOval((int)this.getPoint().x, (int)this.getPoint().y, 20, 20);
+        super.paint(brush, diameter);
     }
 
-    public boolean move() {
+    public boolean bulletMove() 
+    {
         if (distanceTraveled < MAX_DISTANCE) {
             distanceTraveled++;
-            this.getPoint().x += (BULLET_SPEED * Math.cos(Math.toRadians(this.getHeading())));
-            this.getPoint().y += (BULLET_SPEED * Math.sin(Math.toRadians(this.getHeading())));
-            if (this.getPoint().x > 800) {
-                this.getPoint().x = 0;
-            }
-            if (this.getPoint().x < 0) {
-                this.getPoint().x = 800;
-            }
-            if (this.getPoint().y > 600) {
-                this.getPoint().y = 0;
-            }
-            if (this.getPoint().y < 0) {
-                this.getPoint().y = 600;
-            }
+            super.move(0.1, 0.1);
             return true;
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
