@@ -42,7 +42,7 @@ public class Ship extends Polygon implements ActionListener {
     }
 
     public void move() {
-        this.getPosition().x += (this.velocity * Math.cos(Math.toRadians(this.getHeading())));
+        this.getPosition().x += (this.velocity * Math.cos(Math.toRadians(this.getHeading()))); 
         this.getPosition().y += (this.velocity * Math.sin(Math.toRadians(this.getHeading())));
         if (this.getPosition().x > 800) {
             this.getPosition().x = 0;

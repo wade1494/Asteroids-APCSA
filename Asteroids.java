@@ -49,21 +49,14 @@ public class Asteroids extends Game {
         };
 
         Asteroid[] array = {
-            new Asteroid(asteroidPoints, new Point(0, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(0, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(0, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(0, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(0, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(0, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(0, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(0, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(Math.random()*780, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(Math.random()*780, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(Math.random()*780, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(Math.random()*780, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(Math.random()*780, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(Math.random()*780, Math.random()*550), Math.random() * 10),
-            new Asteroid(asteroidPoints, new Point(Math.random()*780, Math.random()*550), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
             // Add more asteroids here
         };
         asteroids = new ArrayList<Asteroid>(Arrays.asList(array));
@@ -78,7 +71,42 @@ public class Asteroids extends Game {
 
         this.addKeyListener(new Keyboard());
     }
+    public void restartGame()
+    {
+        this.play = true;
+        Point[] shipPoints = { 
+            new Point(0, 0), 
+            new Point(35, 10), 
+            new Point(0, 20), 
+            new Point(5, 10) 
+        };
+        ship = new Ship(shipPoints, new Point(300, 300), 0);
 
+
+        // This draws each asteroid as a perfect hexagon.
+        Point[] asteroidPoints = {
+            new Point(20, 0),
+            new Point(0, 10),
+            new Point(0, 30),
+            new Point(20, 40),
+            new Point(40, 30),
+            new Point(40, 10)
+        };
+
+        Asteroid[] array = {
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            new Asteroid(asteroidPoints, new Point((Math.random()*300) + 50, (Math.random()*300) + 50), Math.random() * 10),
+            // Add more asteroids here
+        };
+        asteroids = new ArrayList<Asteroid>(Arrays.asList(array));
+        repaint();
+    }
     public void paint(Graphics brush) {
         brush.setColor(Color.black);
         brush.fillRect(0, 0, width, height);
@@ -132,10 +160,31 @@ public class Asteroids extends Game {
                 if (asteroid.collidesWith(ship))
                 {
                     this.play = false;   
-                    brush.setFont(new Font("TimesRoman", Font.PLAIN, 50));
-                    brush.drawString("GAME OVER", 250, 300);
+                    Font defaultFont = brush.getFont();
+                    brush.setFont(new Font("Arial", Font.BOLD, 128));
+                    brush.drawString("YOU DIED", 100, 250);
+                    brush.setFont(new Font("Arial", Font.BOLD, 72));
+                    brush.drawString("Press R to restart", 100,350);
+                    brush.setFont(defaultFont);
                 }
                 asteroid.paint(brush);
+
+            }
+            for (int i = 0; i < asteroids.size(); i++)
+            {
+                if (bullet1 != null && asteroids.get(i).contains(bullet1.getPoint()))
+                {
+                    asteroids.remove(i);
+                    bullet1 = null;
+                    i--;
+                    continue;
+                }
+                if (bullet2 != null && asteroids.get(i).contains(bullet2.getPoint()))
+                {
+                    asteroids.remove(i);
+                    bullet2 = null;
+                    i--;
+                }
             }
             // Milestone 5: Add another for loop (or do it in the same loop above) that will
             // 1. Check and see if the current asteroid has collided with the ship
@@ -173,6 +222,7 @@ public class Asteroids extends Game {
     }
 
     public static void main(String[] args) {
+
         new Asteroids();
     }
 
@@ -196,6 +246,11 @@ public class Asteroids extends Game {
             if (e.getKeyCode() == KeyEvent.VK_SPACE) 
             {
                 shoot();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_R && !play)
+            {
+
+                restartGame();
             }
         }
 

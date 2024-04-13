@@ -1,13 +1,10 @@
 import java.awt.Graphics;
 
-public class Circle 
+public class Circle extends Shape
 {
-    private Point position;
-    private double heading;
     public Circle(Point _postition, double _heading)
     {
-        this.position = _postition;
-        this.heading = _heading;
+        super(_postition, _heading);
     }
     public Point getPoint()
     {

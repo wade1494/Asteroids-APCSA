@@ -16,6 +16,6 @@ public class Star extends Circle
     }
 
     public void move() {
-        super.move(0.1, 0.1);
+        super.move(0.01, 0.01);
     }
 }

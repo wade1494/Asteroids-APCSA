@@ -12,20 +12,8 @@ USAGE: You are intended to instantiate this class with a set of points that
 NOTE: You don't need to worry about the "magic math" details.
 */
 
-public class Polygon implements Cloneable {
-    private Point position; // The absolute point in space of the center of the polgon
-    private double heading; // Can be thought of as the "rotation." 0 is right/east. Increase rotates clockwise
+public class Polygon extends Shape implements Cloneable{
     private Point[] vertices; // An array of points that comprise the vertices of the polygon. Drawn relative to the "position"
-
-    public Point getPosition() {
-        return this.position;
-    }
-    public double getHeading() {
-        return this.heading;
-    }
-    public void setHeading(double _newHeading) {
-        this.heading = _newHeading;
-    }
 
     public boolean collidesWith(Polygon other) {
         Point[] otherPoints = other.getPoints();
@@ -38,8 +26,7 @@ public class Polygon implements Cloneable {
     }
 
     public Polygon(Point[] _vertices, Point _position, double _heading) {
-        this.position = _position;
-        this.heading = _heading;
+        super(_position, _heading);
         vertices = _vertices;
 
         // First, we find the shape's top-most left-most boundary, its origin.
