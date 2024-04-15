@@ -12,6 +12,9 @@ USAGE: You are intended to instantiate this class with a set of points that
 NOTE: You don't need to worry about the "magic math" details.
 */
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 public class Polygon extends Shape implements Cloneable{
     private Point[] vertices; // An array of points that comprise the vertices of the polygon. Drawn relative to the "position"
 
@@ -24,7 +27,18 @@ public class Polygon extends Shape implements Cloneable{
         }
         return false;
     }
-
+    public void paint(Graphics brush) {
+        Point[] astPoints = this.getPoints();
+        int numPoints = astPoints.length;
+        int[] xPositions = new int[numPoints];
+        int[] yPositions = new int[numPoints];
+        for (int i = 0; i < numPoints; i++) {
+            xPositions[i] = (int)astPoints[i].x;
+            yPositions[i] = (int)astPoints[i].y;
+        }
+        brush.setColor(Color.WHITE);
+        brush.drawPolygon(xPositions, yPositions, numPoints);
+    }
     public Polygon(Point[] _vertices, Point _position, double _heading) {
         super(_position, _heading);
         vertices = _vertices;
