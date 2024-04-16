@@ -12,13 +12,20 @@ import javax.swing.Timer;
 public class Ship extends Polygon implements ActionListener {
     Timer timer = new Timer(300, this);
     private double velocity = 0;
-
+    private double accelerateUnit = 0.0003;
     public Ship(Point[] _vertices, Point _position, double _heading) {
         
         super(_vertices, _position, _heading);
         timer.start();
     }
-
+    public void setAccelerate(double newAccelerateUnit)
+    {
+        this.accelerateUnit = newAccelerateUnit;
+    }
+    public double getAccelerate()
+    {
+        return this.accelerateUnit;
+    }
     public void paint(Graphics brush) {
         // Get the rotation-adjusted array of points from the superclass
         Point[] shipPoints = this.getPoints();
@@ -37,10 +44,17 @@ public class Ship extends Polygon implements ActionListener {
 
     public void accelerate() {
         if (this.velocity < 1) {
-            this.velocity += 0.0003;
+            this.velocity += accelerateUnit;
         }
     }
-
+    public void setVelocity(double newVelocity)
+    {
+        this.velocity = newVelocity;
+    }
+    public double getVelocity()
+    {
+        return this.velocity;
+    }
     public void move() {
         this.getPosition().x += (this.velocity * Math.cos(Math.toRadians(this.getHeading()))); 
         this.getPosition().y += (this.velocity * Math.sin(Math.toRadians(this.getHeading())));

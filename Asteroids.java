@@ -28,7 +28,7 @@ public class Asteroids extends Game {
     private ArrayList<ExplosiveStar> explosive = new ArrayList<>();
     public void damageTimer() 
     {
-        collisionTimer = new Timer(1000, new ActionListener() {
+        collisionTimer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 damageApplied = false;
@@ -394,12 +394,16 @@ public void asteroidSpawner()
             explosive.add(new ExplosiveStar(new Point(this.ship.getPosition().x + 10, this.ship.getPosition().y), 120));
             explosive.add(new ExplosiveStar(new Point(this.ship.getPosition().x, this.ship.getPosition().y - 10), 240));
             explosive.add(new ExplosiveStar(new Point(this.ship.getPosition().x + 30, this.ship.getPosition().y), 360));
+            ship.setVelocity(0.0003);
+            ship.setVelocity(ship.getVelocity() * 80/100);
+            ship.setAccelerate(ship.getAccelerate() * 50/100);
             while (!explosive.get(0).explosiveMove() && !explosive.get(1).explosiveMove() && !explosive.get(2).explosiveMove())
             {
                 explosive.remove(0);
                 explosive.remove(1);
                 explosive.remove(2);
             }
+
         }
         
     }
@@ -473,22 +477,12 @@ public void asteroidSpawner()
                 }
                 if (smallAsteroid.collidesWith(ship))
                 {
-                    if (!damageApplied)
+                    if (!damageApplied && play)
                     {
                         shipKillAnimation();
                         shipHealth--;
                         damageApplied = true;
                         collisionTimer.start();
-                    }
-                    if (shipHealth <= 0)
-                    {
-                        this.play = false;
-                        Font defaultFont = brush.getFont();
-                        brush.setFont(new Font("Arial", Font.BOLD, 128));
-                        brush.drawString("YOU DIED", 100, 250);
-                        brush.setFont(new Font("Arial", Font.BOLD, 72));
-                        brush.drawString("Press R to restart", 100,350);
-                        brush.setFont(defaultFont);
                     }
                 }
                 smallAsteroid.paint(brush);
@@ -505,13 +499,6 @@ public void asteroidSpawner()
                 }
                 if (asteroid.collidesWith(ship))
                 {
-                    if (!damageApplied)
-                    {
-                        shipKillAnimation();
-                        shipHealth--;
-                        damageApplied = true;
-                        collisionTimer.start();
-                    }
                     if (shipHealth <= 0)
                     {
                         this.play = false;
@@ -545,6 +532,20 @@ public void asteroidSpawner()
                     bullet2 = null;
                     i--;
                 }
+                if (ship.collidesWith(asteroids.get(i)))
+                {
+                    if (!damageApplied && play)
+                    {
+                        shipKillAnimation();
+                        killAnimation(asteroids.get(i));
+                        splitAsteroid(asteroids.get(i));
+                        asteroids.remove(i);
+                        shipHealth--;
+                        damageApplied = true;
+                        collisionTimer.start();
+                        
+                    }
+                }
             }
             for (int i = 0; i < smallerAsteroidList.size(); i++)
             {
@@ -563,6 +564,29 @@ public void asteroidSpawner()
                     bullet2 = null;
                     i--;
                 }
+                if (ship.collidesWith(smallerAsteroidList.get(i)))
+                {
+                    if (!damageApplied && play)
+                    {
+                        shipKillAnimation();
+                        killAnimation(smallerAsteroidList.get(i));
+                        smallerAsteroidList.remove(i);
+                        shipHealth--;
+                        damageApplied = true;
+                        collisionTimer.start();
+                        
+                    }
+                }
+                if (shipHealth <= 0)
+                        {
+                            this.play = false;
+                            Font defaultFont = brush.getFont();
+                            brush.setFont(new Font("Arial", Font.BOLD, 128));
+                            brush.drawString("YOU DIED", 100, 250);
+                            brush.setFont(new Font("Arial", Font.BOLD, 72));
+                            brush.drawString("Press R to restart", 100,350);
+                            brush.setFont(defaultFont);
+                        }
             }
             // Milestone 5: Add another for loop (or do it in the same loop above) that will
             // 1. Check and see if the current asteroid has collided with the ship
@@ -571,15 +595,18 @@ public void asteroidSpawner()
             // 2.1. If so, set the bullet to null so it disappears, and remove the asteroid
             //      from the asteroids list (remember to adjust the loop variable accordingly)
         }
-        
+        double shipHeadingRadians = Math.toRadians(ship.getHeading());
         Point[] thrusterPoints = { 
             new Point(0, 0), 
-            new Point(-20, 10), 
+            new Point(-14, 10), 
             new Point(0, 20), 
             new Point(5, 10)
         };
-        Polygon thurster = new Polygon(thrusterPoints, new Point(ship.getPosition().x - 20, ship.getPosition().y), ship.getHeading());
-        thurster.paint(brush);
+        if (accelerating) {
+            // Draw thruster if ship is accelerating
+            Polygon thurster = new Polygon(thrusterPoints, new Point(ship.getPosition().x - 14 * Math.cos(shipHeadingRadians), ship.getPosition().y - 14 * Math.sin(shipHeadingRadians)), ship.getHeading());
+            thurster.paint(brush);
+        }
         // End Asteroids /////////////////////////////////////////////////////
         // Bullets ///////////////////////////////////////////////////////////
         if (bullet1 != null) {
