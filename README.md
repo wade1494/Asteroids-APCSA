@@ -1,4 +1,4 @@
-# Add a note here telling me which enhancements you did in Milestone 7
+# School Project, APCSA
 - When the player dies, allow the user to press a key to restart the game (5 point)
 - Asteroid have different shape (2 point)
 - Break the asteroids into smaller asteroids when hit (5 point)
